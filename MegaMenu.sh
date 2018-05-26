@@ -96,36 +96,26 @@ decidir () {
 a_funcion () {
 		
 	imprimir_encabezado "\tOpción a.  Datos de Red";
-	DireccionRouter=$(ifconfig | grep -i "inet " -m 1|awk 'N=2 {print $N}')
-	MiDirecciondeRed=$(ip route show | grep -i "via " -m 1|awk 'N=3 {print $N}')
+	DireccionRed=$(ifconfig | grep -i "inet" -m 1|awk 'N=2 {print $N}')
+	IPRouter=$(ip route show | grep -i "via " -m 1|awk 'N=3 {print $N}')
 	Ip=$(dig +short myip.opendns.com @resolver1.opendns.com) 
 	#dig: nos permite  hacer dns para obtener informacion de nombre de dominio
 	echo Mi Direccion ip publica es: "$Ip"
-	echo Mi Direccion de red es: "$DireccionRouter"
-	echo La Direccion del router es: "$MiDirecciondeRed"
+	echo Mi Direccion de red es: "$DireccionRed"
+	echo La Direccion del router es: "$IPRouter"
 	
 	}
 	
 b_funcion() {
+
 	imprimir_encabezado "\t0pción b. Escaneo de Red";
-	IPBroadcast=$(ifconfig | grep "broadcast" | awk 'N=6 {print $N}')
+	IPBroadcast=$(ip route show | grep -i "via " -m 1|awk 'N=3 {print $N}')
 	IPBroadcast=${IPBroadcast/%[0-9][0-9][0-9]/*}
 	IPBroadcast=${IPBroadcast/%[0-9][0-9]/*}
 	IPBroadcast=${IPBroadcast/%[0-9]/*}	
+	sudo nmap -sP $IPBroadcast | grep -B 1 "for "
 	
-	$sudo nmap -sP $IPBroadcast | grep -B 1 "for "
-	
-	
-
-
-
-	
-	
-	
-
-	
-	
-}
+	}
 		
 
 #------------------------------------------------------
