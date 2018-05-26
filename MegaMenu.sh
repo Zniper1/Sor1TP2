@@ -33,7 +33,7 @@ imprimir_menu () {
     echo "";
     echo -e "\t\t\t a.  Datos de Red";
     echo -e "\t\t\t b.  Escaneo de Red";
-    echo -e "\t\t\t c.  ";
+    echo -e "\t\t\t c.  Loguearse a dispositivo";
     echo -e "\t\t\t d.  ";
     echo -e "\t\t\t e.  "; 
     echo -e "\t\t\t f.  ";
@@ -114,6 +114,18 @@ b_funcion() {
 	IPBroadcast=${IPBroadcast/%[0-9][0-9]/*}
 	IPBroadcast=${IPBroadcast/%[0-9]/*}	
 	sudo nmap -sP $IPBroadcast | grep -B 1 "for "
+	
+	}
+c_funcion() {
+
+	imprimir_encabezado "\t0pción c. Loguearse a dispositivo";
+	read -p "Ingrese el puerto" puerto
+	read -p "Ingrese el usuario" usuario	
+	read -p "Ingrese la ip del servidor" ip
+	ssh -X -p $puerto $usuario@$ip
+	echo "para salir del servidor escriba exit"
+	echo "Ingrese la aplicacion a Ejecutar y presione enter:"
+	
 	
 	}
 		
