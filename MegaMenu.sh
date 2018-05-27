@@ -34,8 +34,8 @@ imprimir_menu () {
     echo -e "\t\t\t a.  Datos de Red";
     echo -e "\t\t\t b.  Escaneo de Red";
     echo -e "\t\t\t c.  Loguearse a dispositivo";
-    echo -e "\t\t\t d.  ";
-    echo -e "\t\t\t e.  "; 
+    echo -e "\t\t\t d.  Copiar archivo de host remoto a servidor";
+    echo -e "\t\t\t e.  Copiar archivo de servidor a host remoto"; 
     echo -e "\t\t\t f.  ";
     echo -e "\t\t\t g.  ";
     echo -e "\t\t\t q.  Salir";
@@ -116,17 +116,49 @@ b_funcion() {
 	sudo nmap -sP $IPBroadcast | grep -B 1 "for "
 	
 	}
+
 c_funcion() {
 
 	imprimir_encabezado "\t0pción c. Loguearse a dispositivo";
 	read -p "Ingrese el puerto: " puerto
 	read -p "Ingrese el usuario: " usuario	
 	read -p "Ingrese la ip del servidor: " ip
+	echo ""
 	echo "Para salir del servidor escriba exit"
+	echo ""
+
 	ssh -X -p $puerto $usuario@$ip
 
-	
 	}
+
+d_funcion() {
+
+	imprimir_encabezado "\t0pción d. Copiar archivo de host remoto a servidor";
+	read -p "Ingrese el nombre y formato del archivo: " archivo
+	read -p "Ingrese el path donde se encuentra el archivo: " path
+	read -p "Ingrese el usuario: " usuario	
+	read -p "Ingrese la ip del servidor: " ip
+	echo ""
+
+	scp $archivo $usuario@$ip:$path
+
+	}
+
+e_funcion() {
+
+	imprimir_encabezado "\t0pción e. Copiar archivo de servidor a host remoto";
+	read -p "Ingrese el nombre y formato del archivo: " archivo
+	read -p "Ingrese el path donde se encuentra el archivo: " path
+	read -p "Ingrese el path donde desea guardar el archivo: " ubicacion
+	read -p "Ingrese el usuario: " usuario	
+	read -p "Ingrese la ip del servidor: " ip
+	echo ""
+
+	scp $usuario@$ip:$path/$archivo $ubicacion
+
+	}
+
+
 		
 
 #------------------------------------------------------
