@@ -119,13 +119,12 @@ b_funcion() {
 c_funcion() {
 
 	imprimir_encabezado "\t0pción c. Loguearse a dispositivo";
-	read -p "Ingrese el puerto" puerto
-	read -p "Ingrese el usuario" usuario	
-	read -p "Ingrese la ip del servidor" ip
+	read -p "Ingrese el puerto: " puerto
+	read -p "Ingrese el usuario: " usuario	
+	read -p "Ingrese la ip del servidor: " ip
+	echo "Para salir del servidor escriba exit"
 	ssh -X -p $puerto $usuario@$ip
-	echo "para salir del servidor escriba exit"
-	echo "Ingrese la aplicacion a Ejecutar y presione enter:"
-	
+
 	
 	}
 		
