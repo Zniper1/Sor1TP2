@@ -134,27 +134,26 @@ c_funcion() {
 d_funcion() {
 
 	imprimir_encabezado "\t0pción d. Copiar archivo de host remoto a servidor";
-	read -p "Ingrese el nombre y formato del archivo: " archivo
-	read -p "Ingrese el path donde se encuentra el archivo: " path
+	read -p "Ingrese el path y nombre del archivo: " archivo
+	read -p "Ingrese el path donde desea guardar el archivo: " ubicacion
 	read -p "Ingrese el usuario: " usuario	
 	read -p "Ingrese la ip del servidor: " ip
 	echo ""
 
-	scp $archivo $usuario@$ip:$path
+	scp $archivo $usuario@$ip:$ubicacion
 
 	}
 
 e_funcion() {
 
 	imprimir_encabezado "\t0pción e. Copiar archivo de servidor a host remoto";
-	read -p "Ingrese el nombre y formato del archivo: " archivo
-	read -p "Ingrese el path donde se encuentra el archivo: " path
+	read -p "Ingrese el path y nombre del archivo: " archivo
 	read -p "Ingrese el path donde desea guardar el archivo: " ubicacion
 	read -p "Ingrese el usuario: " usuario	
 	read -p "Ingrese la ip del servidor: " ip
 	echo ""
 
-	scp $usuario@$ip:$path/$archivo $ubicacion
+	scp $usuario@$ip:$archivo $ubicacion
 
 	}
 
