@@ -96,10 +96,15 @@ decidir () {
 a_funcion () {
 		
 	imprimir_encabezado "\tOpción a.  Datos de Red";
+	echo "Datos de su Red: "
+	echo ""
+
 	DireccionRed=$(ifconfig | grep -i "inet" -m 1|awk 'N=2 {print $N}')
 	IPRouter=$(ip route show | grep -i "via " -m 1|awk 'N=3 {print $N}')
 	Ip=$(dig +short myip.opendns.com @resolver1.opendns.com) 
+
 	#dig: nos permite  hacer dns para obtener informacion de nombre de dominio
+
 	echo Mi Direccion ip publica es: "$Ip"
 	echo Mi Direccion de red es: "$DireccionRed"
 	echo La Direccion del router es: "$IPRouter"
@@ -109,10 +114,14 @@ a_funcion () {
 b_funcion() {
 
 	imprimir_encabezado "\t0pción b. Escaneo de Red";
+	echo "Ingrese su contraseña para ver las Ip conectadas a su Router"
+	echo ""
+
 	IPBroadcast=$(ip route show | grep -i "via " -m 1|awk 'N=3 {print $N}')
 	IPBroadcast=${IPBroadcast/%[0-9][0-9][0-9]/*}
 	IPBroadcast=${IPBroadcast/%[0-9][0-9]/*}
-	IPBroadcast=${IPBroadcast/%[0-9]/*}	
+	IPBroadcast=${IPBroadcast/%[0-9]/*}
+	
 	sudo nmap -sP $IPBroadcast | grep -B 1 "for "
 	
 	}
@@ -120,11 +129,15 @@ b_funcion() {
 c_funcion() {
 
 	imprimir_encabezado "\t0pción c. Loguearse a dispositivo";
+	echo "Ingrese los datos necesarios para logearse en el servidor"
+	echo ""
+
 	read -p "Ingrese el puerto: " puerto
 	read -p "Ingrese el usuario: " usuario	
 	read -p "Ingrese la ip del servidor: " ip
+
 	echo ""
-	echo "Para salir del servidor escriba exit"
+	echo "Para salir del servidor escriba 'exit'"
 	echo ""
 
 	ssh -X -p $puerto $usuario@$ip
@@ -134,6 +147,9 @@ c_funcion() {
 d_funcion() {
 
 	imprimir_encabezado "\t0pción d. Copiar archivo de host remoto a servidor";
+	echo "Ingrese los datos necesarios para copiar un archivo en el servidor"
+	echo ""
+
 	read -p "Ingrese el path y nombre del archivo: " archivo
 	read -p "Ingrese el path donde desea guardar el archivo: " ubicacion
 	read -p "Ingrese el usuario: " usuario	
@@ -147,6 +163,9 @@ d_funcion() {
 e_funcion() {
 
 	imprimir_encabezado "\t0pción e. Copiar archivo de servidor a host remoto";
+	echo "Ingrese los datos encesarios para copiar un archivo desde el servidor"
+	echo ""
+
 	read -p "Ingrese el path y nombre del archivo: " archivo
 	read -p "Ingrese el path donde desea guardar el archivo: " ubicacion
 	read -p "Ingrese el usuario: " usuario	
