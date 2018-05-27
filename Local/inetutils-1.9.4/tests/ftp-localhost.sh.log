@@ -1,0 +1,2 @@
+ftpd needs to run as root
+SKIP ftp-localhost.sh (exit status: 77)

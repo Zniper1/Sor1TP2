@@ -1,0 +1,2 @@
+traceroute needs to run as root
+SKIP traceroute-localhost.sh (exit status: 77)

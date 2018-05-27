@@ -1,0 +1,32 @@
+===============================================
+   GNU inetutils 1.9.4: tests/test-suite.log
+===============================================
+
+# TOTAL: 15
+# PASS:  12
+# SKIP:  3
+# XFAIL: 0
+# FAIL:  0
+# XPASS: 0
+# ERROR: 0
+
+.. contents:: :depth: 2
+
+SKIP: ping-localhost.sh
+=======================
+
+ping needs to run as root
+SKIP ping-localhost.sh (exit status: 77)
+
+SKIP: traceroute-localhost.sh
+=============================
+
+traceroute needs to run as root
+SKIP traceroute-localhost.sh (exit status: 77)
+
+SKIP: ftp-localhost.sh
+======================
+
+ftpd needs to run as root
+SKIP ftp-localhost.sh (exit status: 77)
+

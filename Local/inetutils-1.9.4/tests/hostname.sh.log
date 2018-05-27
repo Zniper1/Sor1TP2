@@ -1,0 +1,3 @@
+juanchin-VirtualBox
+hostname: skipping tests to set host name
+PASS hostname.sh (exit status: 0)

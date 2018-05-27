@@ -1,0 +1,2 @@
+ping needs to run as root
+SKIP ping-localhost.sh (exit status: 77)
