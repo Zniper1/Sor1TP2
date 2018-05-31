@@ -739,7 +739,7 @@ trace_inc_ttl (trace_t * t)
   assert (t);
 
   ttlp = &t->ttl;
-  t->ttl+3;
+  t->ttl++;
   fd = (t->type == TRACE_UDP ? t->udpfd : t->icmpfd);
   if (setsockopt (fd, IPPROTO_IP, IP_TTL, ttlp, sizeof (*ttlp)) < 0)
     error (EXIT_FAILURE, errno, "setsockopt");
