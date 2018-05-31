@@ -79,9 +79,15 @@ int main()
   ///////////////////////////////////////////
   // Empieza el ciclo principal del servidor
   ///////////////////////////////////////////
-
+  int desde = 1;
+  int hasta = 256;
+  int nRandom = 0;
+  int contadorIntentos = 8;
   bool salir_ciclo = false;
   while(!salir_ciclo){
+    if (contadorIntentos == 0){
+	    salir_ciclo=true;
+    }
     //El servidor hace lo siguiente en cada iteracion
 
     //limpiamos el buffer str
@@ -108,7 +114,29 @@ int main()
       write(comm_fd, "chau\n", strlen("chau\n")+1); 
       salir_ciclo=true;
     }
-    else{
+    else if(strcmp(target,"start")==0){
+	    contadorIntentos--;
+	    nRandom = rand() % ((hasta-desde+1) + desde;
+		write(comm_fd, "%i \n",nRandom);
+	}
+else if(strcmp(target,"mayor")==0){
+	contadorIntentos--;
+	desde = nRandom;
+	nRandom = rand() % ((hasta-desde+1) + desde;
+		write(comm_fd, "%i \n",nRandom);
+}
+else if(strcmp(target,"menor")==0){
+	contadorIntentos--;
+	hasta = nRandom;
+	nRandom = rand() % ((hasta-desde+1) + desde;
+		write(comm_fd, "%i \n",nRandom);
+}
+else if(strcmp(target,"igual")==0){
+      write(comm_fd, "GANE!\n", strlen("GANE!\n")+1); 
+      salir_ciclo=true;
+    }
+			    
+	    
       //devolvemos un eco al cliente
       write(comm_fd, str, strlen(str)+1);
     }
