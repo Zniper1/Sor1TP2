@@ -46,22 +46,30 @@ int main(int argc,char **argv)
     bzero(sendline, 100);
     bzero(recvline, 100);
 
-    //leer un string de stdin (la terminal) y guardarlo en sendline
-    //el usuario tiene que escribir algo
-    fgets(sendline, 100, stdin); /*stdin = 0 , for standard input */
+	//leer un string de stdin (la terminal) y guardarlo en sendline
+	//el usuario tiene que escribir algo
+	fgets(sendline, 100, stdin); /*stdin = 0 , for standard input */
+printf("%s",sendline);
+printf("%i",strlen(sendline));
 
-    //escribir  sendline en  socket_client_fd
-    write(socket_client_fd, sendline, strlen(sendline)+1);
+	while(strcmp(sendline,"start")!=0 || strcmp(sendline,"mayor")!=0 || 
+		strcmp(sendline,"menor")!=0 || strcmp(sendline,"igual")!=0 || 
+		strcmp(sendline,"salir")!=0){
+			fgets(sendline, 100, stdin); /*stdin = 0 , for standard input */
+printf("%s",sendline);
+printf("%i",strlen(sendline));
+		}
+		//escribir sendline en  socket_client_fd
+		write(socket_client_fd, sendline, strlen(sendline)+1);
 
-    //leer de  socket_client_fd  en srecvline
-    read(socket_client_fd,recvline,100);
-    //Imprimir en pantalla lo que lei
-    printf("El servidor respondió:");
-    printf("%s",recvline);
-    printf("\n");
-
-
-  }
-  return 0; //EXIT_SUCCESS;
+		//leer de  socket_client_fd  en srecvline
+		read(socket_client_fd,recvline,100);
+	
+		//Imprimir en pantalla lo que lei
+		printf("El servidor respondió:");
+		printf("%s",recvline);
+		printf("\n");
+ }
+ return 0; //EXIT_SUCCESS;
 }
 
