@@ -1,15 +1,54 @@
-/*Librerias requeridas*/
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-//GNU\Linux implementa el protocolo IP, version 4, descrito en RFC 791 y RFC 1122.
-//Tambien contiene un router IP y un filtro de paquetes. 
-//referencia: https://linux.die.net/man/7/ip
-
-#include <sys/types.h>
 #include <stdio.h>
-#include<string.h>
+#include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <arpa/inet.h>
 
+
+int RandomNumber( int inicio, int fin ){
+ /*
+  Genera un número aleatorio entre
+  inicio y fin.
+ */
+
+ int resultado = 0;
+
+ // Calculamos el margen entre inicio y fin
+ int margen = fin - inicio;
+
+ // Establecemos el comienzo del intervalo
+ int comienzo = inicio;
+
+ // Comprobamos si el intervalo está al revés
+ if( inicio > fin ){
+
+  // Cambiamos el comienzo
+  comienzo = fin;
+
+  // Cambiamos el signo de la diferencia
+  margen = margen * -1;
+ }
+
+ /*
+  * Añadimos uno al margen ya que la función
+  * rand calcula entre el 0 y uno menos que
+  * el margen.
+  */
+ margen++;
+
+ /*
+  Si el intervalo no comienza y acaba en el
+  mismo número.
+ */
+
+ // Generamos el número aleatorio.
+ resultado = comienzo + (rand() % margen);
+
+ return resultado;
+}
 
 int main()
 {
@@ -43,7 +82,7 @@ int main()
   my_server_addr.sin_port = htons(22000);
 
 
-  
+
   //////////////////////////////////////
   // Definir el socket
   //////////////////////////////////////
@@ -52,13 +91,13 @@ int main()
   //File Descriptors (descriptores de archivo) a ser usados
   //En la familia Unix de sistemas operativos, un file descriptor (FD) es un indicador abstracto (handle) usado para acceder a un archivo oa algun otro recurso input/output, como por ejemplo un socket. Los File Descriptors forman parte de la interfaz POSIX. Un File Descriptor se implementa como un entero no-negativo
   int listen_fd, comm_fd;
-  
-  //Cada servidor necesita escuchar “listen” por conecciones. La siguiente funcion crea un socket 
+
+  //Cada servidor necesita escuchar “listen” por conecciones. La siguiente funcion crea un socket
   listen_fd = socket(AF_INET, SOCK_STREAM, 0);
   //AF_INET, es una familia de direcciones que es usada para designar el tipo de direcciones a los que se puede comunicar tu socket (en este caso, direcciones Internet Protocol v4). El kernel de Linux, por ejemplo, soporta otras 29 familias tales como sockets UNIX (AF_UNIX) y IPX (AF_IPX), y tambien comunicaniones con IRDA y Bluetooth (AF_IRDA and AF_BLUETOOTH). Existe tambien AF_INET6 para direcciones Internet Protocol v6.
   //SOCK_STREAM, corresponde a la conexion TCP
   //Los datos de todos los dispositivos que Data desean conectarse a este socket seran redirigidos a listen_fd.
-  
+
   bind(listen_fd, (struct sockaddr *) &my_server_addr, sizeof(my_server_addr));
   //Prepara para escuchar por conecciones de direcciones/puertos especificados en my_server_addr ( cualquier IP en el puerto 22000 ).
   //int bind(int listen_fd, const struct sockaddr *my_server_addr, socklen_t addrlen);
@@ -69,7 +108,7 @@ int main()
   //Empiezo a escuchar por connecciones
   //listen()  marca el  socket referenciado por listen_fd como un socket que sera usado para aceptar hasta 10 conecciones
 
-    
+
   comm_fd = accept(listen_fd, (struct sockaddr*) NULL, NULL);
   //Acepta una coneccion, si no hay nadie espera. Se retorna un file descriptor comm_fd que se usa para comunicarse. Todo lo que se envia al servidor se puede leer de comm_fd, todo lo que se escriba en comm_fd es enviado al otro dispositivo que se conectó.
 
@@ -77,9 +116,16 @@ int main()
   ///////////////////////////////////////////
   // Empieza el ciclo principal del servidor
   ///////////////////////////////////////////
-
+  int desde = 1;
+  int hasta = 256;
+  int nRandom = 0;
+  int contadorIntentos = 8;
   bool salir_ciclo = false;
   while(!salir_ciclo){
+    if (contadorIntentos == 0){
+          write(comm_fd, "PERDISTE\n", strlen("PERDISTE\n")+1);
+          salir_ciclo=true;
+        }
     //El servidor hace lo siguiente en cada iteracion
 
     //limpiamos el buffer str
@@ -88,13 +134,13 @@ int main()
 
     //read(int comm_fd, void *str, size_t count);
     //la funcion read() lee hasta 100 bytes del file descriptor comm_fd y lo guarda en el buffer str
-    //si tiene exito, el numero de bytes leidos es retornado 
+    //si tiene exito, el numero de bytes leidos es retornado
     read(comm_fd, str, 100);
 
     //mostrar lo que leemos del cliente
     printf("Un cliente dice: %s",str);
-        
-	
+
+
     //Ahora proceso lo que nos envio el cliente
     //creo una variable target y copio ahi los primeros 5 caracteres de los que nos envio el cliente
     char target[100];
@@ -103,14 +149,43 @@ int main()
 
     //ahora comparo target con la palabra salir
     if(strcmp(target,"salir")==0){
-      write(comm_fd, "chau\n", strlen("chau\n")+1); 
+      write(comm_fd, "chau\n", strlen("chau\n")+1);
       salir_ciclo=true;
     }
-    else{
+    if(strcmp(target,"start")==0){
+
+	    contadorIntentos--;
+
+	    nRandom = RandomNumber(desde,hasta);
+        char MSG[10];
+        sprintf(MSG, "%d", nRandom);
+		write(comm_fd, MSG,strlen(MSG)+1);
+	}
+    if(strcmp(target,"mayor")==0){
+        contadorIntentos--;
+        desde = nRandom;
+        nRandom = RandomNumber(desde,hasta);
+        char MSG[10];
+        sprintf(MSG, "%d", nRandom);
+        write(comm_fd, MSG,strlen(MSG)+1);
+}
+    if(strcmp(target,"menor")==0){
+        contadorIntentos--;
+        hasta = nRandom;
+        nRandom = RandomNumber(desde,hasta);
+        char MSG[10];
+        sprintf(MSG, "%d", nRandom);
+        write(comm_fd, MSG,strlen(MSG)+1);
+}
+    if(strcmp(target,"igual")==0){
+      write(comm_fd, "GANE!\n", strlen("GANE!\n")+1);
+      salir_ciclo=true;
+    }
       //devolvemos un eco al cliente
       write(comm_fd, str, strlen(str)+1);
     }
-  }
-  printf("Adios amigos!\n");    
+      printf("Adios amigos!\n");
   return 0; //EXIT_SUCCESS;
-}
+  }
+
+

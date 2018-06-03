@@ -2324,7 +2324,7 @@
 /* #undef HAVE_TERMLIB_TGETENT */
 
 /* Define to 1 if tgetent() exists. */
-#define HAVE_TGETENT 1
+/* #undef HAVE_TGETENT */
 
 /* Define to 1 if you have the `towlower' function. */
 #define HAVE_TOWLOWER 1
