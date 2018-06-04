@@ -121,7 +121,7 @@ c_funcion() {
 	echo "Para salir del servidor escriba 'exit'"
 	echo ""
 
-	ssh -X $puerto $usuario@$ip
+	ssh -X -p $puerto $usuario@$ip
 
 	}
 
