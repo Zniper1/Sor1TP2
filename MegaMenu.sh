@@ -10,8 +10,6 @@
     bg_blue=`tput setab 4`;
     reset=`tput sgr0`;
     bold=`tput setaf bold`;
-   
-
 
 #------------------------------------------------------
 # VARIABLES GLOBALES
@@ -36,8 +34,6 @@ imprimir_menu () {
     echo -e "\t\t\t c.  Loguearse a dispositivo";
     echo -e "\t\t\t d.  Copiar archivo de host remoto a servidor";
     echo -e "\t\t\t e.  Copiar archivo de servidor a host remoto"; 
-    echo -e "\t\t\t f.  ";
-    echo -e "\t\t\t g.  ";
     echo -e "\t\t\t q.  Salir";
     echo "";
     echo -e "Escriba la opción y presione ENTER";
@@ -72,21 +68,6 @@ malaEleccion () {
     echo -e "Selección Inválida ..." ;
 }
 
-decidir () {
-    echo $1;
-    while true; do
-        echo "desea ejecutar? (s/n)";
-            read respuesta;
-            case $respuesta in
-                [Nn]* ) break;;
-                   [Ss]* ) eval $1
-                break;;
-                * ) echo "Por favor tipear S/s ó N/n.";;
-            esac
-    done
-}
-
-
 
 #------------------------------------------------------
 # FUNCTIONES del MENU
@@ -114,7 +95,7 @@ a_funcion () {
 b_funcion() {
 
 	imprimir_encabezado "\t0pción b. Escaneo de Red";
-	echo "Ingrese su contraseña para ver las Ip conectadas a su Router"
+	echo "Ingrese su contraseña para ver los dispositivos conectados a su Red"
 	echo ""
 
 	IPBroadcast=$(ip route show | grep -i "via " -m 1|awk 'N=3 {print $N}')
@@ -175,8 +156,6 @@ e_funcion() {
 	scp $usuario@$ip:$archivo $ubicacion
 
 	}
-
-
 		
 
 #------------------------------------------------------
@@ -190,15 +169,12 @@ do
     # 2. leer la opcion del usuario
     read opcion;
     
-    
     case $opcion in
         a|A) a_funcion;;
         b|B) b_funcion;;
         c|C) c_funcion;;
         d|D) d_funcion;;
         e|E) e_funcion;;
-        f|F) f_funcion;;
-        g|G) g_funcion;;
         q|Q) break;;
         *) malaEleccion;;
     esac
