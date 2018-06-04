@@ -22,7 +22,7 @@ int main()
   struct sockaddr_in  my_server_addr;
   //Struct para contener una direccion IP y un numero de Puerto
   // struct sockaddr_in {
-  //    sa_family_t    sin_family; /* address family: AF_INET */
+      sa_family_t    sin_family; /* address family: AF_INET */
   //    struct in_addr sin_addr;   /* internet address */
   //    in_port_t      sin_port;   /* port in network byte order ; in_port_t es equivalente al tipo uint16_t */
   //};
